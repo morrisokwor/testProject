@@ -19,5 +19,10 @@ git clone https://github.com/morrisokwor/testProject.git
 cd testProject
 
 docker-compose up
+```
+
+### 2. Access swagger 
+http://localhost:8080/swagger-ui/index.html#
+
 
 
