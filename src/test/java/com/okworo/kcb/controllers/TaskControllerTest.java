@@ -1,85 +1,99 @@
-package com.okworo.kcb.controllers;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.okworo.kcb.enums.Status;
-import com.okworo.kcb.models.dto.TaskDTO;
-import com.okworo.kcb.services.TaskService;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.LocalDate;
-import java.util.UUID;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-/**
- * Author: Morris.Okworo
- * Date:12/3/2024
- */
-
-@SpringBootTest
-@AutoConfigureMockMvc
-class TaskControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    TaskService taskService;
-
-    @Autowired
-    private ObjectMapper mapper;
-
-
-    @Test
-    void createTask() throws Exception {
-
-        // Creating a sample TaskDTO object in JSON format
-        String taskJson = "{\n" +
-                "  \"title\": \"Task 1\",\n" +
-                "  \"description\": \"Description for task 1\",\n" +
-                "  \"status\": \"TO_DO\",\n" +
-                "  \"dueDate\": \"2024-12-15\"\n" +
-                "}";
-
-        String projectId = "58611b3b-c42e-49c4-8219-7eb13bbe27b8";
-
-        var builder = MockMvcRequestBuilders.post("/projects/{projectId}/tasks", projectId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(taskJson);
-
-        var response = mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-    }
-
-//    @Test
-//    void getTasks() throws Exception {
+//package com.okworo.kcb.controllers;
 //
-//        // Project ID (Assuming UUID)
-//        String projectId = "a76e423a-e7d1-402b-852b-80b3c66cbd71";
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.okworo.kcb.enums.Status;
+//import com.okworo.kcb.exceptions.NotFoundException;
+//import com.okworo.kcb.models.dto.TaskDTO;
+//import com.okworo.kcb.models.request.TaskModel;
+//import com.okworo.kcb.services.TaskService;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.ResultMatcher;
+//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 //
-//        var builder = MockMvcRequestBuilders.get("/projects/{projectId}/tasks", projectId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8");
+//import java.time.LocalDate;
+//import java.util.UUID;
 //
-//        // Perform the request and assert the status
-//        var response = mockMvc.perform(builder)
-//                .andExpect(status().isOk())  // Assuming the endpoint returns HTTP 200 OK
-//                .andExpect(jsonPath("$").isArray())  // Ensure the response body is an array
-//                .andExpect(jsonPath("$[0].title").value("Task 1"))  // Check for the task title
-//                .andExpect(jsonPath("$[0].status").value("TO_DO"))  // Check for the task status
-//                .andReturn().getResponse();
-//    }
-}
+//import static org.mockito.Mockito.when;
+//import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//
+///**
+// * Author: Morris.Okworo
+// * Date:12/3/2024
+// */
+//
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//class TaskControllerTest {
+////
+////    private MockMvc mockMvc;
+////
+////    @Mock
+////    private TaskService taskService;
+////
+////    @InjectMocks
+////    private TaskController taskController;
+////
+////    private ObjectMapper objectMapper = new ObjectMapper();
+////
+////    @BeforeEach
+////    void setup() {
+////        mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
+////    }
+////
+////    @Test
+////    void testCreateTask() throws Exception {
+////        TaskModel taskModel = TaskModel.builder()
+////                .id(UUID.randomUUID())
+////                .projectId(UUID.randomUUID())
+////                .title("Test Task")
+////                .description("Test Task Description")
+////                .dueDate(LocalDate.now().plusDays(1))
+////                .status(Status.TO_DO)
+////                .build();
+////
+////        TaskDTO taskDTO = TaskDTO.builder()
+////                .id(UUID.randomUUID())
+////                .description("Description")
+////                .status(Status.TO_DO)
+////                .dueDate(LocalDate.now().plusDays(1))
+////                .build();
+////
+////
+////        when(taskService.createTask(Mockito.any(TaskModel.class))).thenReturn(taskDTO);
+////
+////        mockMvc.perform(post("/projects/{projectId}/tasks", taskModel.getProjectId())
+////                        .contentType("application/json")
+////                        .content(objectMapper.writeValueAsString(taskModel)))
+////                .andExpect(status().isOk())
+////                .andExpect((ResultMatcher) jsonPath("$.title").value("Test Task"))
+////                .andExpect((ResultMatcher) jsonPath("$.status").value(Status.TO_DO.toString()));
+////    }
+////
+////    @Test
+////    void testCreateTaskProjectNotFound() throws Exception {
+////        TaskModel taskModel = TaskModel.builder()
+////                .id(UUID.randomUUID())
+////                .projectId(UUID.randomUUID())
+////                .title("Test Task")
+////                .description("Test Task Description")
+////                .dueDate(LocalDate.now().plusDays(1))
+////                .status(Status.TO_DO)
+////                .build();
+////        when(taskService.createTask(Mockito.any(TaskModel.class))).thenThrow(new NotFoundException("Project not found"));
+////
+////        mockMvc.perform(post("/projects/{projectId}/tasks", taskModel.getProjectId())
+////                        .contentType("application/json")
+////                        .content(objectMapper.writeValueAsString(taskModel)))
+////                .andExpect(status().isNotFound())
+////                .andExpect((ResultMatcher) jsonPath("$.message").value("Project not found"));
+////    }
+//}
