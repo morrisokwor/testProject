@@ -3,8 +3,10 @@ package com.okworo.kcb.models.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 /**
@@ -16,7 +18,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProjectModel {
     private UUID id;
-    @NotBlank
+    @NotBlank(message = "Name Cannot be blank")
+    @NotEmpty(message = "Name missing")
     private String name;
     private String description;
 }

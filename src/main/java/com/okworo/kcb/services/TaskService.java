@@ -2,6 +2,7 @@ package com.okworo.kcb.services;
 
 import com.okworo.kcb.entities.TaskEntity;
 import com.okworo.kcb.enums.Status;
+import com.okworo.kcb.exceptions.NotFoundException;
 import com.okworo.kcb.models.dto.TaskDTO;
 import com.okworo.kcb.models.request.TaskModel;
 import com.okworo.kcb.repsoitory.ProjectRepository;
@@ -31,7 +32,7 @@ public class TaskService {
     public TaskDTO createTask(TaskModel model) {
         var task = modelMapper.map(model, TaskEntity.class);
         task.setProject(projectRepository.findById(model.getProjectId()).orElseThrow(() ->
-                new RuntimeException("Project not found")));
+                new NotFoundException("Project not found")));
         return modelMapper.map(taskRepository.save(task), TaskDTO.class);
     }
 
@@ -53,16 +54,16 @@ public class TaskService {
 
 
     public TaskDTO updateTask(TaskModel model) {
-        var task = taskRepository.findById(model.getId()).orElseThrow(() ->
-                new RuntimeException("Task not found"));
-        modelMapper.map(task, model);
+        taskRepository.findById(model.getId()).orElseThrow(() ->
+                new NotFoundException("Task not found"));
+        var task = modelMapper.map(model, TaskEntity.class);
         return modelMapper.map(taskRepository.save(task), TaskDTO.class);
 
     }
 
     public void deleteTask(UUID taskId) {
         var task = taskRepository.findById(taskId).orElseThrow(() ->
-                new RuntimeException("Task not found"));
+                new NotFoundException("Task not found"));
         taskRepository.delete(task);
     }
 }

@@ -2,6 +2,7 @@ package com.okworo.kcb.services;
 
 import com.okworo.kcb.entities.ProjectEntity;
 import com.okworo.kcb.enums.Status;
+import com.okworo.kcb.exceptions.NotFoundException;
 import com.okworo.kcb.models.dto.ProjectDTO;
 import com.okworo.kcb.models.request.ProjectModel;
 import com.okworo.kcb.repsoitory.ProjectRepository;
@@ -42,7 +43,8 @@ public class ProjectService {
 
 
     public ProjectDTO getProjectById(UUID projectId) {
-        var project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+        var project = projectRepository.findById(projectId).orElseThrow(() ->
+                new NotFoundException("Project not found"));
         return modelMapper.map(project, ProjectDTO.class);
     }
 

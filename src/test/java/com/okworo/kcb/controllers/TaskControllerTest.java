@@ -38,44 +38,30 @@ class TaskControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+
     @Test
-    void verifyEmailAddress() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("COUNTRY_CODE", "KE");
+    void createTask() throws Exception {
 
+        // Creating a sample TaskDTO object in JSON format
+        String taskJson = "{\n" +
+                "  \"title\": \"Task 1\",\n" +
+                "  \"description\": \"Description for task 1\",\n" +
+                "  \"status\": \"TO_DO\",\n" +
+                "  \"dueDate\": \"2024-12-15\"\n" +
+                "}";
 
-        var builder = MockMvcRequestBuilders.post("/verify/email")
+        String projectId = "58611b3b-c42e-49c4-8219-7eb13bbe27b8";
+
+        var builder = MockMvcRequestBuilders.post("/projects/{projectId}/tasks", projectId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .requestAttr("email_address", "k.kitinya@gmail.com")
-                .headers(headers);
-//        MockHttpServletResponse response= mockMvc.perform(builder).andExpect(status().)
-    }
+                .content(taskJson);
 
-//    @Test
-//    void createTask() throws Exception {
-//
-//        // Creating a sample TaskDTO object in JSON format
-//        String taskJson = "{\n" +
-//                "  \"title\": \"Task 1\",\n" +
-//                "  \"description\": \"Description for task 1\",\n" +
-//                "  \"status\": \"TO_DO\",\n" +
-//                "  \"dueDate\": \"2024-12-15\"\n" +
-//                "}";
-//
-//        String projectId = "a76e423a-e7d1-402b-852b-80b3c66cbd71";
-//
-//        var builder = MockMvcRequestBuilders.post("/projects/{projectId}/tasks", projectId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8")
-//                .content(taskJson);
-//
-//        var response = mockMvc.perform(builder)
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse();
-//    }
+        var response = mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+    }
 
 //    @Test
 //    void getTasks() throws Exception {
