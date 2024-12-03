@@ -1,5 +1,6 @@
 package com.okworo.kcb.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -22,9 +23,10 @@ import java.util.UUID;
 @Table(name = "project")
 public class ProjectEntity {
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.AUTO)
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
     @NotBlank
+    @Column(nullable = false)
     private String name;
 
     private String description;
